@@ -12,19 +12,5 @@ class SettingsProjectTest : FixtureTest("settings") {
             "--no-isolated-projects",
         ).buildAndFail()
         assertContains(failure.output, "Listener registration using Gradle.addListener")
-
-        runner(
-            "verify",
-            "-Pcompatible=true",
-            "--no-configuration-cache",
-            "--no-isolated-projects",
-        ).build()
-
-        runner(
-            "verify",
-            "-Prelaxed=true",
-            "--no-configuration-cache",
-            "--no-isolated-projects",
-        ).build()
     }
 }

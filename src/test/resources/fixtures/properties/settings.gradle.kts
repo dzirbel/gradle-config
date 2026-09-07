@@ -1,12 +1,5 @@
 plugins {
-    id("io.github.dzirbel.gradle-config.settings")
+    id("io.github.dzirbel.gradle-config")
 }
 
 rootProject.name = "properties-fixture"
-
-buildCache {
-    local {
-        directory = file("build/local-cache")
-    }
-}
-

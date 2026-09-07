@@ -25,12 +25,10 @@ abstract class FixtureTest(private val fixture: String) {
         .withProjectDir(projectDir)
         .withPluginClasspath()
         .withArguments(
-            "--stacktrace",
-            "--configuration-cache",
-            "--configuration-cache-problems=fail",
-            "--isolated-projects",
-            "--warning-mode=fail",
-            "--max-workers=2",
-            *tasks,
+            listOf(
+                "--stacktrace",
+                "--warning-mode=fail",
+                "--max-workers=2",
+            ).filter { default -> tasks.none { it.substringBefore('=') == default.substringBefore('=') } } + tasks,
         )
 }

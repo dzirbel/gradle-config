@@ -1,5 +1,5 @@
 plugins {
-    id("io.github.dzirbel.gradle-config.settings")
+    id("io.github.dzirbel.gradle-config")
 }
 
 rootProject.name = "jvm-fixture"

@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 class JvmProjectTest : FixtureTest("jvm") {
     @Test
-    fun `configures toolchains in either plugin order and respects overrides under isolation`() {
+    fun `settings plugin configures all JVM projects and respects overrides under isolation`() {
         val tasks = arrayOf(":default:compileJava", ":override:compileJava", ":explicit:compileJava")
         val first = runner(*tasks).build()
         assertContains(first.output, "Configuration cache entry stored")

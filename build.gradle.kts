@@ -20,14 +20,8 @@ gradlePlugin {
         register("gradleConfig") {
             id = "io.github.dzirbel.gradle-config"
             implementationClass = "io.github.dzirbel.gradleconfig.GradleConfigPlugin"
-            displayName = "Shared Gradle project configuration"
-            description = "JVM toolchains, Gradle script formatting, and recommended Gradle properties."
-        }
-        register("gradleConfigSettings") {
-            id = "io.github.dzirbel.gradle-config.settings"
-            implementationClass = "io.github.dzirbel.gradleconfig.GradleConfigSettingsPlugin"
             displayName = "Shared Gradle settings configuration"
-            description = "Strict configuration cache validation."
+            description = "JVM toolchain conventions, strict validation, and consuming-build configuration checks."
         }
     }
 }
