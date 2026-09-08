@@ -1,0 +1,1 @@
+gradleConfig { javaLanguageVersion = 21 }

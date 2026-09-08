@@ -21,14 +21,18 @@ abstract class FixtureTest(private val fixture: String) {
         if (::projectDir.isInitialized) projectDir.deleteRecursively()
     }
 
-    protected fun runner(vararg tasks: String): GradleRunner = GradleRunner.create()
-        .withProjectDir(projectDir)
-        .withPluginClasspath()
-        .withArguments(
-            listOf(
-                "--stacktrace",
-                "--warning-mode=fail",
-                "--max-workers=2",
-            ).filter { default -> tasks.none { it.substringBefore('=') == default.substringBefore('=') } } + tasks,
-        )
+    protected fun runner(vararg tasks: String): GradleRunner = runner(tasks.toList())
+
+    protected fun runner(tasks: Collection<String>): GradleRunner {
+        return GradleRunner.create()
+            .withProjectDir(projectDir)
+            .withPluginClasspath()
+            .withArguments(
+                listOf(
+                    "--stacktrace",
+                    "--warning-mode=fail",
+                    "--max-workers=2",
+                ).filter { default -> tasks.none { it.substringBefore('=') == default.substringBefore('=') } } + tasks,
+            )
+    }
 }

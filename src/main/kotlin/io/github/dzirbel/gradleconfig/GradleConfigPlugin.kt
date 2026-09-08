@@ -28,6 +28,11 @@ class GradleConfigPlugin : Plugin<Settings> {
         }
 
         settings.gradle.lifecycle.beforeProject(ConfigureProject())
+
+        // TODO dependency analysis
+        // TODO dependency sorting
+        // TODO Gradle file formatting
+        // TODO licenses?
     }
 }
 

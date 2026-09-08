@@ -25,6 +25,9 @@ abstract class CheckGradleConfiguration : DefaultTask() {
     abstract val kotlinDslWarningsAsErrors: Property<String>
 
     @get:Input
+    abstract val javaLanguageVersion: Property<Int>
+
+    @get:Input
     abstract val warnOnly: Property<Boolean>
 
     init {
@@ -51,6 +54,20 @@ abstract class CheckGradleConfiguration : DefaultTask() {
                 logger.warn(message)
                 if (required) failures.add(message)
             }
+        }
+
+        // Read the executing daemon, not a JVM version captured during configuration.
+        val actualJavaVersion = Runtime.version().feature()
+        val expectedJavaVersion = javaLanguageVersion.get()
+        if (actualJavaVersion == expectedJavaVersion) {
+            logger.lifecycle("Gradle JVM=$actualJavaVersion [OK]")
+        } else {
+            val message = "Gradle JVM=$actualJavaVersion; required: Gradle JVM=$expectedJavaVersion. " +
+                "Select a matching JDK through JAVA_HOME, your IDE's Gradle JVM, or org.gradle.java.home. " +
+                "If using gradle/gradle-daemon-jvm.properties, regenerate it with ./gradlew updateDaemonJvm; " +
+                "its criteria take precedence over JAVA_HOME and org.gradle.java.home."
+            logger.warn(message)
+            failures.add(message)
         }
 
         check("org.gradle.configuration-cache", cached.toString(), "true", true)

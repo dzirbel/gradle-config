@@ -19,24 +19,27 @@ Requires Gradle 9.7.1+ and Java 21+.
 
 ### JVM Toolchain
 
-JVM projects (those with the `java-base` plugin) are configured to use a Java 25 toolchain. Can be overridden by
+`gradle-config` configures the JVM toolchain used by projects applying `java-base`, including Kotlin/JVM projects,
+defaulting to a Java 25 [toolchain](https://docs.gradle.org/current/userguide/toolchains.html). The built-in
+[Foojay resolver](https://github.com/gradle/foojay-toolchains) is used to automatically download a matching JDK to the
+Gradle User Home when no matching JDK is available locally (and auto-download is enabled; disable with
+`org.gradle.java.installations.auto-download=false` in `gradle.properties`). Override with
+`gradleConfig { javaLanguageVersion = <...> }` or explicit `java.toolchain` / `kotlin { jvmToolchain(<...>) }`.
 
-```kotlin
-gradleConfig {
-    javaLanguageVersion = <...>
-}
-```
+The JVM toolchain version is independent of the JVM running the Gradle daemon itself, but `gradle-config` enforces they
+match (in `:checkGradleConfiguration`) for consistency. Consumers should generally generate and check in a
+`gradle/gradle-daemon-jvm.properties` with `./gradlew updateDaemonJvm` to select the daemon JVM.
 
 ### Gradle Configuration options
 
-The plugin directly sets some Gradle configuration options:
+`gradle-config` directly sets some Gradle configuration options:
 
 | Option                       | Type            | Value     |
 |------------------------------|-----------------|-----------|
 | `STABLE_CONFIGURATION_CACHE` | Feature preview | `enabled` |
 
-Others are not set directly but their state is verified via a `checkGradleConfiguration` task, which is included in
-`check`:
+Others are not set directly but their state is verified via a (root project) `:checkGradleConfiguration` task, which is
+included in `:check`:
 
 | Option                                                                              | Type                                  | Value  | On mismatch |
 |-------------------------------------------------------------------------------------|---------------------------------------|--------|-------------|

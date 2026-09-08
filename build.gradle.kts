@@ -1,3 +1,5 @@
+import org.gradle.buildconfiguration.tasks.UpdateDaemonJvm
+
 plugins {
     `kotlin-dsl`
     `maven-publish`
@@ -9,6 +11,11 @@ version = "0.1.0-SNAPSHOT"
 kotlin {
     jvmToolchain(21)
     compilerOptions.allWarningsAsErrors = true
+}
+
+// Generate daemon criteria from the same toolchain used to build the plugin.
+tasks.named<UpdateDaemonJvm>("updateDaemonJvm") {
+    languageVersion = java.toolchain.languageVersion
 }
 
 dependencies {
@@ -33,6 +40,13 @@ tasks.validatePlugins {
 }
 
 tasks.test {
+    for (version in listOf(21, 25)) {
+        systemProperty(
+            "jdk${version}Home",
+            javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(version) }
+                .get().metadata.installationPath.asFile.absolutePath,
+        )
+    }
     testLogging {
         events("failed", "skipped")
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
