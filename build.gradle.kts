@@ -12,6 +12,7 @@ kotlin {
 }
 
 dependencies {
+    implementation(libs.gradle.foojay.plugin)
     testImplementation(kotlin("test"))
 }
 
@@ -21,7 +22,7 @@ gradlePlugin {
             id = "io.github.dzirbel.gradle-config"
             implementationClass = "io.github.dzirbel.gradleconfig.GradleConfigPlugin"
             displayName = "Shared Gradle settings configuration"
-            description = "JVM toolchain conventions, strict validation, and consuming-build configuration checks."
+            description = "Opinionated Gradle settings plugin which enforces strict and bleeding-edge Gradle configuration options to the entire project."
         }
     }
 }

@@ -9,7 +9,7 @@ Apply the settings plugin once in `settings.gradle.kts`:
 
 ```kotlin
 plugins {
-    id("io.github.dzirbel.gradle-config")
+    id("io.github.dzirbel.gradle-config") version "<...>"
 }
 ```
 
@@ -56,4 +56,4 @@ coverage and strictness are closely reviewed; implementation is typically less s
 
 - `./gradlew check` runs all tests and verification. Require JDKs 21 and 25.
 - `./gradlew publishToMavenLocal` publishes the plugin to the local maven repository (`~/.m2/repository`) for use on the
-  same machine
+  same machine (via `pluginManagement { repositories.mavenLocal() }`)
