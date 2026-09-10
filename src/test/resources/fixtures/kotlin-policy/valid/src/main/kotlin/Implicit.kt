@@ -1,0 +1,1 @@
+fun implicitApi() = 1

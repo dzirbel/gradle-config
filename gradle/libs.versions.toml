@@ -1,5 +1,7 @@
 [versions]
 gradle-foojay = "1.0.0"
+kotlin-api = "2.4.0"
 
 [libraries]
 gradle-foojay-plugin = { module = "org.gradle.toolchains.foojay-resolver-convention:org.gradle.toolchains.foojay-resolver-convention.gradle.plugin", version.ref = "gradle-foojay" }
+kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin-api" }

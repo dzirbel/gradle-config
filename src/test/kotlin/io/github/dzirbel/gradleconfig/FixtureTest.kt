@@ -26,9 +26,13 @@ abstract class FixtureTest(private val fixture: String) {
     protected fun runner(tasks: Collection<String>): GradleRunner {
         return GradleRunner.create()
             .withProjectDir(projectDir)
-            .withPluginClasspath()
             .withArguments(
                 listOf(
+                    "--init-script",
+                    File(requireNotNull(javaClass.getResource("/published-plugin.init.gradle.kts")).toURI()).absolutePath,
+                    "-PgradleConfigRepository=${System.getProperty("pluginRepository")}",
+                    "-PgradleConfigVersion=${System.getProperty("pluginVersion")}",
+                ) + listOf(
                     "--stacktrace",
                     "--warning-mode=fail",
                     "--max-workers=2",

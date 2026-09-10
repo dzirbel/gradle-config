@@ -20,6 +20,7 @@ tasks.named<UpdateDaemonJvm>("updateDaemonJvm") {
 
 dependencies {
     implementation(libs.gradle.foojay.plugin)
+    implementation(libs.kotlin.gradle.plugin.api)
     testImplementation(kotlin("test"))
 }
 
@@ -40,6 +41,9 @@ tasks.validatePlugins {
 }
 
 tasks.test {
+    dependsOn("publishAllPublicationsToLocalTestRepository")
+    systemProperty("pluginVersion", project.version.toString())
+    systemProperty("pluginRepository", layout.buildDirectory.dir("repository").get().asFile.absolutePath)
     for (version in listOf(21, 25)) {
         systemProperty(
             "jdk${version}Home",

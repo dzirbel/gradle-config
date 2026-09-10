@@ -8,6 +8,7 @@ import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.withGroovyBuilder
 import org.gradle.kotlin.dsl.withType
 
 internal class GradleProjectConfigPlugin : Plugin<Project> {
@@ -23,9 +24,15 @@ internal class GradleProjectConfigPlugin : Plugin<Project> {
             }
         }
 
-        // TODO also configure Kotlin:
-        //  - allWarningsAsErrors
-        //  - ksp allWarningsAsErrors
+        project.configureKotlin(config)
+
+        project.pluginManager.withPlugin("com.google.devtools.ksp") {
+            // KSP has no separate Gradle API artifact; avoid bundling its plugin implementation.
+            project.extensions.getByName("ksp").withGroovyBuilder {
+                setProperty("allWarningsAsErrors", true)
+            }
+        }
+
         // TODO resolutionStrategy.failOnNonReproducibleResolution()
         // TODO configure test logging (and reports?)
         //  - fail on writing to std_out or std_err
