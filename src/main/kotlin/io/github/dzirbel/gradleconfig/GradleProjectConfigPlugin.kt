@@ -26,6 +26,7 @@ internal class GradleProjectConfigPlugin : Plugin<Project> {
 
         project.configureKotlin(config)
         project.configureGradleLint()
+        project.configureTests()
 
         project.pluginManager.withPlugin("com.google.devtools.ksp") {
             // KSP has no separate Gradle API artifact; avoid bundling its plugin implementation.
@@ -49,8 +50,6 @@ internal class GradleProjectConfigPlugin : Plugin<Project> {
             dependsOn(projectHealth)
         }
 
-        // TODO configure test logging (and reports?)
-        //  - fail on writing to std_out or std_err
         // TODO task configuration:
         //  - check / test / compile
         //  - Android default variant
