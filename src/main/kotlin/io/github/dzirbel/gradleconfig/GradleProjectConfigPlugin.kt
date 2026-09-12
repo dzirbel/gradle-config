@@ -25,6 +25,7 @@ internal class GradleProjectConfigPlugin : Plugin<Project> {
         }
 
         project.configureKotlin(config)
+        project.configureGradleLint()
 
         project.pluginManager.withPlugin("com.google.devtools.ksp") {
             // KSP has no separate Gradle API artifact; avoid bundling its plugin implementation.

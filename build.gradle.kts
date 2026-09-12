@@ -22,6 +22,8 @@ dependencies {
     implementation(libs.dependency.analysis.plugin)
     implementation(libs.gradle.foojay.plugin)
     implementation(libs.kotlin.gradle.plugin.api)
+    implementation(libs.sort.dependencies.plugin)
+    implementation(libs.spotless.plugin)
     testImplementation(kotlin("test"))
 }
 

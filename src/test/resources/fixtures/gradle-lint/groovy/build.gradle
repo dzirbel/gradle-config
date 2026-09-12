@@ -1,0 +1,14 @@
+configurations {
+    implementation
+    testImplementation
+}
+
+dependencies {
+    testImplementation 'org.example:test:1.0'
+    implementation 'org.example:zebra:1.0'
+    // Keep this comment and exclusion attached to alpha.
+    implementation('org.example:alpha:1.0') {
+        exclude group: 'org.example', module: 'excluded'
+    }
+    implementation project(':container:leaf')
+}

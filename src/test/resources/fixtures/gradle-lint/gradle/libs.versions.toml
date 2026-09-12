@@ -1,0 +1,3 @@
+[libraries]
+alpha = { module = "org.example:alpha", version = "1.0" }
+zebra = { module = "org.example:zebra", version = "1.0" }
