@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 
 class PublishedKotlinApiProjectTest : FixtureTest("published-kotlin-api") {
     @Test
-    fun `published settings plugin works without KGP and with a separately versioned Kotlin project`() {
+    fun `published settings plugin works with a consumer-selected Kotlin version and a Java root`() {
         // Deliberately omit withPluginClasspath: resolve the real publication and its runtime dependencies.
         val runner = GradleRunner.create()
             .withProjectDir(projectDir)

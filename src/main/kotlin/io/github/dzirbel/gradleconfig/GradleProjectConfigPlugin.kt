@@ -33,7 +33,21 @@ internal class GradleProjectConfigPlugin : Plugin<Project> {
             }
         }
 
-        // TODO resolutionStrategy.failOnNonReproducibleResolution()
+        project.configurations.configureEach {
+            resolutionStrategy {
+                // Require an explicit decision instead of silently choosing the newest requested version.
+                failOnVersionConflict()
+                failOnNonReproducibleResolution()
+            }
+        }
+
+        // Use each project's own health task so :child:check also enforces dependency hygiene.
+        // Aggregation-only and unsupported projects do not have a projectHealth task.
+        val projectHealth = project.tasks.matching { it.name == "projectHealth" }
+        project.tasks.matching { it.name == "check" }.configureEach {
+            dependsOn(projectHealth)
+        }
+
         // TODO configure test logging (and reports?)
         //  - fail on writing to std_out or std_err
         // TODO task configuration:
@@ -55,7 +69,9 @@ internal class GradleProjectConfigPlugin : Plugin<Project> {
                     project.providers.gradleProperty("org.gradle.kotlin.dsl.allWarningsAsErrors").orElse("false"),
                 )
             }
-            project.tasks.named("check") { dependsOn(verification) }
+            project.tasks.named("check") {
+                dependsOn(verification, "buildHealth")
+            }
         }
     }
 }

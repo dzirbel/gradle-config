@@ -1,11 +1,13 @@
 package io.github.dzirbel.gradleconfig
 
+import com.autonomousapps.DependencyAnalysisExtension
 import org.gradle.api.GradleException
 import org.gradle.api.IsolatedAction
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.api.initialization.resolve.RepositoriesMode
+import org.gradle.kotlin.dsl.configure
 import org.gradle.util.GradleVersion
 
 class GradleConfigPlugin : Plugin<Settings> {
@@ -18,6 +20,18 @@ class GradleConfigPlugin : Plugin<Settings> {
 
         settings.pluginManagement.repositories { gradlePluginPortal() }
         settings.pluginManager.apply("org.gradle.toolchains.foojay-resolver-convention")
+        // Consumers must load Kotlin/Android plugins in settings with apply false so analysis can see their classes.
+        settings.pluginManager.apply("com.autonomousapps.build-health")
+        settings.extensions.configure<DependencyAnalysisExtension> {
+            reporting { printBuildHealth(true) }
+            issues {
+                all {
+                    onAny { severity("fail") }
+                    // Duplicate-class warnings have their own severity, independent of onAny.
+                    onDuplicateClassWarnings { severity("fail") }
+                }
+            }
+        }
 
         settings.dependencyResolutionManagement {
             repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -29,7 +43,6 @@ class GradleConfigPlugin : Plugin<Settings> {
 
         settings.gradle.lifecycle.beforeProject(ConfigureProject())
 
-        // TODO dependency analysis
         // TODO dependency sorting
         // TODO Gradle file formatting
         // TODO licenses?

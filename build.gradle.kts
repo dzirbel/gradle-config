@@ -19,6 +19,7 @@ tasks.named<UpdateDaemonJvm>("updateDaemonJvm") {
 }
 
 dependencies {
+    implementation(libs.dependency.analysis.plugin)
     implementation(libs.gradle.foojay.plugin)
     implementation(libs.kotlin.gradle.plugin.api)
     testImplementation(kotlin("test"))
